@@ -8,6 +8,7 @@ public class ScanTrainApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScanTrainApplication.class, args);
+//		System.out.println("Hiiiiiiii");
 	}
 
 }
