@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 
+import java.util.Random;
+
 @Entity
 public class User {
     @Id
@@ -66,5 +68,12 @@ public class User {
 
     public void setConPassword(String conPassword) {
         ConPassword = conPassword;
+    }
+
+    public int otpGeneration()
+    {
+        Random random = new Random();
+        int number = random.nextInt(999999);
+        return number;
     }
 }
