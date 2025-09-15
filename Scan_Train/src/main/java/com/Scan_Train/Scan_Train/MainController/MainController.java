@@ -1,38 +1,57 @@
 package com.Scan_Train.Scan_Train.MainController;
 
-import com.Scan_Train.Scan_Train.Model.User;
-import com.Scan_Train.Scan_Train.Repository.UserRepo;
-import jakarta.servlet.http.HttpServletResponse;
+import com.Scan_Train.Scan_Train.DTO.AskRequest;
+import com.Scan_Train.Scan_Train.DTO.AskResponse;
+import com.Scan_Train.Scan_Train.DTO.VerifyOtpRequest;
+import com.Scan_Train.Scan_Train.DTO.userDTO;
+import com.Scan_Train.Scan_Train.service.GeminiService;
+import com.Scan_Train.Scan_Train.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
-
-@Controller
+@RestController
+@RequestMapping("/api/auth")
 public class MainController
 {
+
     @Autowired
-    private UserRepo userRepo;
+    private UserService service;
 
-    @PostMapping("/Sign_Up")
-    public String SignUp(@ModelAttribute User user, HttpServletResponse response) throws IOException {
-        if(!user.getPassword().equals(user.getConPassword()))
-        {
-            response.setContentType("text/html");
-            response.getWriter().println("<script>alert('Passwords do not match!'); window.location.href = '/index.html';</script>");
-            return null;
-        }
-        else {
+    @Autowired
+    private GeminiService geminiService;
 
-            return null;
-        }
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody userDTO request) {
+        return ResponseEntity.ok(service.signup(request));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest request, HttpSession session) {
+
+        return ResponseEntity.ok(service.verifyOtp(request.getEmail(), request.getOtp()));
     }
 
     @GetMapping("/login")
     public void Login(@RequestParam String email, @RequestParam String password)
     {
 
+    }
+
+    @PostMapping("/ask")
+    public ResponseEntity<?> ask(@RequestBody AskRequest request){
+        try{
+            AskResponse response = geminiService.ask(request);
+            return ResponseEntity.ok(response);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to get response from Gemini: " + e.getMessage());
+        }
     }
 }

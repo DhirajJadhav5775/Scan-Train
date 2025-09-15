@@ -1,79 +1,71 @@
 package com.Scan_Train.Scan_Train.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.Random;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
-    private int Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @Column
-    private String FirstName;
+    private String firstName;
+
     @Column
-    private String LastName;
+    private String lastName;
+
     @Column
-    private String Email;
+    private String email;
+
     @Column
-    private String Password;
+    private String password;
+
     @Transient
-    private String ConPassword;
+    private String conPassword;
 
-    public int getId() {
-        return Id;
+    @Column
+    private int age;
+
+    @Column
+    private String gender;
+
+
+    // Getters & Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+
+    public String getConPassword() { return conPassword; }
+    public void setConPassword(String conPassword) { this.conPassword = conPassword; }
+
+    public int getAge() {
+        return age;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getFirstName() {
-        return FirstName;
+    public String getGender() {
+        return gender;
     }
 
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-
-    public String getConPassword() {
-        return ConPassword;
-    }
-
-    public void setConPassword(String conPassword) {
-        ConPassword = conPassword;
-    }
-
-    public int otpGeneration()
-    {
-        Random random = new Random();
-        int number = random.nextInt(999999);
-        return number;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
